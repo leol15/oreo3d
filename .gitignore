@@ -1,0 +1,6 @@
+
+# C++ obj
+*.o
+
+# exe
+test_main
