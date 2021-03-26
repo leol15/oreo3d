@@ -41,7 +41,7 @@ int main(int argc, char const *argv[]) {
 	SceneNode root;
 
 	// load some shader programs and textures
-	ShaderProgram default_shader();
+	ShaderProgram default_shader("asset/shaders/default.vert", "asset/shaders/default.frag");
 
 	// build the sceen tree
 

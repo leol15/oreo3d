@@ -1,8 +1,7 @@
 #ifndef SHADER_PROGRAM_H_
 #define SHADER_PROGRAM_H_
 
-// #include <GL/glew.h>
-// #include <GLFW/glfw3.h>
+#include <GL/glew.h>
 
 #include <string>
 
