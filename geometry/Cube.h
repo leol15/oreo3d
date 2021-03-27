@@ -15,8 +15,7 @@
 class Cube : public Geometry {
 public:
 	Cube();
-	virtual ~Cube() { };
-
+	virtual ~Cube();
 
 };
 

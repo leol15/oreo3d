@@ -41,22 +41,85 @@ int main(int argc, char const *argv[]) {
 	SceneNode root;
 
 	// load some shader programs and textures
-	ShaderProgram default_shader("asset/shaders/default.vert", "asset/shaders/default.frag");
-
+	// ShaderProgram * default_shader = new ShaderProgram("asset/shaders/normals.vert", "asset/shaders/normals.frag");
+	ShaderProgram * default_shader = new ShaderProgram("asset/shaders/blinn.vert", "asset/shaders/blinn.frag");
+	GLuint programID = default_shader->getProgram();
 	// build the sceen tree
 
-	Drawable * cube = new Drawable();
+	// Drawable * cube_drawable = new Drawable();
+	// cube_drawable->setShaderProgram(default_shader);
 
-	root.setDrawable(cube);
+	Cube basic_cube;
+	Mesh cube_mesh = basic_cube.getMesh();
+
+	// sphere SOR
+	// std::vector<glm::vec2> sphere_arc;
+	// for (float angle = 0; angle <= 180; angle += 10) {
+	// 	sphere_arc.push_back(glm::vec2(
+	// 		static_cast<float>(sin(angle / 180 * M_PI)),
+	// 		static_cast<float>(cos(angle / 180 * M_PI))));
+	// }
+	// Mesh sphere(sphere_arc, 6);
+
+
+	GLuint Mid = glGetUniformLocation(programID, "M");
+	GLuint Vid = glGetUniformLocation(programID, "V");
+	GLuint Pid = glGetUniformLocation(programID, "P");
+	glm::mat4 M(1);
+
+	// lights
+	GLuint LightPositionID = glGetUniformLocation(programID, "LightPosition");
+	GLuint LightAmbientID = glGetUniformLocation(programID, "LightAmbient");
+	GLuint CameraPositionID = glGetUniformLocation(programID, "CameraPosition");
+
+	glm::vec3 LightPosition(0, 5, 0);
+	glm::vec3 LightAmbient(0.1f, 0.1f, 0.1f);
+
+	// cube_drawable->setMesh(triangle);
+	GLMesh glmesh;
+	glmesh.setMesh(basic_cube.getMesh());
+
+	// alt
+
+	// root.setDrawable(cube_drawable);
 
 	// main loop
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && 
 			glfwWindowShouldClose(window) == 0) {
 		// one whole process
 		gl_clear();
+		// draw with hand
+		glUseProgram(default_shader->getProgram());
+
+		// GLuint Mid = glGetUniformLocation(default_shader->getProgram(), "M");
+		// GLuint Vid = glGetUniformLocation(default_shader->getProgram(), "V");
+		// GLuint Pid = glGetUniformLocation(default_shader->getProgram(), "P");
+		// GLuint MVPid = glGetUniformLocation(default_shader->getProgram(), "MVP");
+		// GLuint Mid = glGetUniformLocation(default_shader->getProgram(), "M");
+		// GLuint DTid = glGetUniformLocation(default_shader->getProgram(), "DT");
+
 		// view and projection matrix
 		glm::mat4 P = ctrl.getProjectionMatrix();
 		glm::mat4 V = ctrl.getViewMatrix();
+		glUniformMatrix4fv(Pid, 1, GL_FALSE, &P[0][0]);
+		glUniformMatrix4fv(Mid, 1, GL_FALSE, &M[0][0]);
+		glUniformMatrix4fv(Vid, 1, GL_FALSE, &V[0][0]);
+
+		// lights
+		glUniform3fv(LightPositionID, 1, &LightPosition[0]);
+		glUniform3fv(LightAmbientID, 1, &LightAmbient[0]);
+		glm::vec3 CameraPosition = ctrl.getCameraPosition();
+		glUniform3fv(CameraPositionID, 1, &CameraPosition[0]);
+		// glUniformMatrix4fv(Mid, 1, GL_FALSE, &M[0][0]);
+		// glUniformMatrix4fv(Vid, 1, GL_FALSE, &V[0][0]);
+		// glUniformMatrix4fv(Pid, 1, GL_FALSE, &P[0][0]);
+
+
+		// glBindVertexArray(VertexArrayID);
+		// glDrawElements(GL_TRIANGLES, faces.size(), GL_UNSIGNED_INT, 0);
+
+		glmesh.render();
+
 		// the triangle drawing pipeline
 		// .
 		// load some shader programing into memory
@@ -65,11 +128,16 @@ int main(int argc, char const *argv[]) {
 		// .
 		// activate & draw mesh buffers
 		//
-		root.render(P, V);
+		// root.render(P, V);
 		// end draw
 	    glfwSwapBuffers(window);
 	    glfwPollEvents();
 	}
+
+	// clean up
+	std::cerr << "cleaning up" << std::endl;
+	delete default_shader;
+	// delete cube_drawable;
 
 	return 0;
 }
@@ -82,8 +150,8 @@ static void gl_clear() {
     glEnable(GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	// glDepthFunc (GL_LEQUAL);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
+    // glEnable(GL_CULL_FACE);
+    // glCullFace(GL_BACK);
     glClearColor(0.1f, 0.1f, 0.15f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
@@ -120,13 +188,6 @@ static bool init_window(GLFWwindow ** window) {
 	}
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(*window, GLFW_STICKY_KEYS, GL_TRUE);
-
-
-	// I won’t dig into details now, but you need to create a Vertex Array Object and set it as the current one :	
-	GLuint VertexArrayID;
-	glGenVertexArrays(1, &VertexArrayID);
-	glBindVertexArray(VertexArrayID);
-
 
 	return true;
 }

@@ -2,8 +2,7 @@
 CPP=g++
 CPPFLAGS=-Wall -g
 
-COMPILE_FLAG = -lglfw -lGLEW -lGLU -lGL -lXrandr -lXi \
-	-lXinerama -lX11 -lrt -ldl -lglad -I../libs/glm-0.9.7.1/
+COMPILE_FLAG = -lglfw -lGLEW -lGLU -lGL -lXrandr -lXi -lXinerama -lX11 -lrt -ldl -lglad -I../libs/glm-0.9.7.1/
 
 GLM_PATH =  -I../libs/glm-0.9.7.1/ 
 
@@ -20,14 +19,14 @@ SCENE_OBJS = scene/SceneNode.o scene/Drawable.o
 all: componenets test_main
 	./test_main
 
-test_main: test_main.cpp
+test_main: test_main.cpp componenets
 	g++ $(CPPFLAGS) $< -pthread -o $@ $(RESOURCE_OBJS) \
 		$(GEOMETRY_OBJS) $(EDITOR_OBJS) $(SCENE_OBJS) \
 		$(COMPILE_FLAG)
 
 # all ingredients
-componenets: $(RESOURCE_OBJS) $(GEOMETRY_OBJS)\
-	$(EDITOR_OBJS) $(SCENE_OBJS)
+componenets: $(EDITOR_OBJS) $(RESOURCE_OBJS) \
+	$(GEOMETRY_OBJS) $(SCENE_OBJS)
 
 # resources
 resource/%.o: resource/%.cpp resource/%.h

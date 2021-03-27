@@ -12,7 +12,7 @@ public:
 	ShaderProgram(const std::string & vertex_shader_path,
 		const std::string & fragment_shader_path,
 		const std::string & geometry_shader_path = "");
-	~ShaderProgram();
+	virtual ~ShaderProgram();
 
 	GLuint getProgram() const { return program_id_; }
 

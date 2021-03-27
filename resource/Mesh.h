@@ -13,11 +13,11 @@ public:
 	Mesh(const std::vector<glm::vec2> pts2d, int num_bands);
 
 	// setter
-	void setPositions(std::vector<glm::vec3>& positions) { positions_ = positions; };
-	void setNormals(std::vector<glm::vec3>& normals) { normals_ = normals; };
-	void setUVs(std::vector<glm::vec2>& UVs) { UVs_ = UVs; };
-	void setColors(std::vector<glm::vec3>& colors) { colors_ = colors; };
-	void setTriangles(std::vector<unsigned int>& triangles) { triangles_ = triangles; };
+	void setPositions(const std::vector<glm::vec3>& positions) { positions_ = positions; };
+	void setNormals(const std::vector<glm::vec3>& normals) { normals_ = normals; };
+	void setUVs(const std::vector<glm::vec2>& UVs) { UVs_ = UVs; };
+	void setColors(const std::vector<glm::vec3>& colors) { colors_ = colors; };
+	void setTriangles(const std::vector<unsigned int>& triangles) { triangles_ = triangles; };
 
 	// getter
 	const std::vector<glm::vec3>& getPositions() const { return positions_; };
