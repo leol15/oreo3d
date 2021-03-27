@@ -9,7 +9,7 @@ public:
 	Geometry();
 	virtual ~Geometry();
 
-	virtual const Mesh& getMesh() { return *mesh_; };
+	virtual const Mesh& getMesh() const { return *mesh_; };
 protected:
 	Mesh * mesh_;
 	

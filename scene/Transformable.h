@@ -2,6 +2,8 @@
 #define TRANSFORMABLE_H_
 
 #include <glm/glm.hpp>
+#include <glm/ext.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 class Transformable {
 public:

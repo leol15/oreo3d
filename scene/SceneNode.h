@@ -11,7 +11,8 @@
 // the tree like sceen graph
 class SceneNode : public Transformable {
 public:
-	SceneNode() : children_(), drawable_(nullptr) { };
+	SceneNode() : Transformable(),
+		children_(), drawable_(nullptr) { };
 
 	void render(const glm::mat4& proj_matrix, 
 		const glm::mat4& view_matrix,

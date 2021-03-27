@@ -19,7 +19,10 @@ void Drawable::draw(const glm::mat4& proj_matrix,
 	GLuint V_ID = glGetUniformLocation(shaderprogram_->getProgram(), "V");
 	GLuint P_ID = glGetUniformLocation(shaderprogram_->getProgram(), "P");
 
-	glUniformMatrix4fv(M_ID, 1, GL_FALSE, &model_matrix[0][0]);
+	// apply local transformations
+	glm::mat4 model_matrix_new = model_matrix * model_matrix_;
+
+	glUniformMatrix4fv(M_ID, 1, GL_FALSE, &model_matrix_new[0][0]);
 	glUniformMatrix4fv(V_ID, 1, GL_FALSE, &view_matrix[0][0]);
 	glUniformMatrix4fv(P_ID, 1, GL_FALSE, &proj_matrix[0][0]);
 

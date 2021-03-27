@@ -37,51 +37,20 @@ int main(int argc, char const *argv[]) {
 
 	Control ctrl(window, WIDTH, HEIGHT);
 
-	// create an artificial scene
-	SceneNode root;
 
 	// load some shader programs and textures
 	// ShaderProgram * default_shader = new ShaderProgram("asset/shaders/normals.vert", "asset/shaders/normals.frag");
 	ShaderProgram * default_shader = new ShaderProgram("asset/shaders/blinn.vert", "asset/shaders/blinn.frag");
-	GLuint programID = default_shader->getProgram();
+	// GLuint programID = default_shader->getProgram();
 	// build the sceen tree
 
-	// Drawable * cube_drawable = new Drawable();
-	// cube_drawable->setShaderProgram(default_shader);
+	Drawable * cube_drawable = new Drawable();
+	cube_drawable->setShaderProgram(default_shader);
+	cube_drawable->setGeometry(Cube());
 
-	Cube basic_cube;
-	Mesh cube_mesh = basic_cube.getMesh();
-
-	// sphere SOR
-	// std::vector<glm::vec2> sphere_arc;
-	// for (float angle = 0; angle <= 180; angle += 10) {
-	// 	sphere_arc.push_back(glm::vec2(
-	// 		static_cast<float>(sin(angle / 180 * M_PI)),
-	// 		static_cast<float>(cos(angle / 180 * M_PI))));
-	// }
-	// Mesh sphere(sphere_arc, 6);
-
-
-	GLuint Mid = glGetUniformLocation(programID, "M");
-	GLuint Vid = glGetUniformLocation(programID, "V");
-	GLuint Pid = glGetUniformLocation(programID, "P");
-	glm::mat4 M(1);
-
-	// lights
-	GLuint LightPositionID = glGetUniformLocation(programID, "LightPosition");
-	GLuint LightAmbientID = glGetUniformLocation(programID, "LightAmbient");
-	GLuint CameraPositionID = glGetUniformLocation(programID, "CameraPosition");
-
-	glm::vec3 LightPosition(0, 5, 0);
-	glm::vec3 LightAmbient(0.1f, 0.1f, 0.1f);
-
-	// cube_drawable->setMesh(triangle);
-	GLMesh glmesh;
-	glmesh.setMesh(basic_cube.getMesh());
-
-	// alt
-
-	// root.setDrawable(cube_drawable);
+	// create an artificial scene
+	SceneNode root;
+	root.setDrawable(cube_drawable);
 
 	// main loop
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && 
@@ -89,7 +58,7 @@ int main(int argc, char const *argv[]) {
 		// one whole process
 		gl_clear();
 		// draw with hand
-		glUseProgram(default_shader->getProgram());
+		// glUseProgram(default_shader->getProgram());
 
 		// GLuint Mid = glGetUniformLocation(default_shader->getProgram(), "M");
 		// GLuint Vid = glGetUniformLocation(default_shader->getProgram(), "V");
@@ -101,24 +70,25 @@ int main(int argc, char const *argv[]) {
 		// view and projection matrix
 		glm::mat4 P = ctrl.getProjectionMatrix();
 		glm::mat4 V = ctrl.getViewMatrix();
-		glUniformMatrix4fv(Pid, 1, GL_FALSE, &P[0][0]);
-		glUniformMatrix4fv(Mid, 1, GL_FALSE, &M[0][0]);
-		glUniformMatrix4fv(Vid, 1, GL_FALSE, &V[0][0]);
+		// glUniformMatrix4fv(Pid, 1, GL_FALSE, &P[0][0]);
+		// glUniformMatrix4fv(Mid, 1, GL_FALSE, &M[0][0]);
+		// glUniformMatrix4fv(Vid, 1, GL_FALSE, &V[0][0]);
 
 		// lights
-		glUniform3fv(LightPositionID, 1, &LightPosition[0]);
-		glUniform3fv(LightAmbientID, 1, &LightAmbient[0]);
-		glm::vec3 CameraPosition = ctrl.getCameraPosition();
-		glUniform3fv(CameraPositionID, 1, &CameraPosition[0]);
+		// glUniform3fv(LightPositionID, 1, &LightPosition[0]);
+		// glUniform3fv(LightAmbientID, 1, &LightAmbient[0]);
+		// glm::vec3 CameraPosition = ctrl.getCameraPosition();
+		// glUniform3fv(CameraPositionID, 1, &CameraPosition[0]);
 		// glUniformMatrix4fv(Mid, 1, GL_FALSE, &M[0][0]);
 		// glUniformMatrix4fv(Vid, 1, GL_FALSE, &V[0][0]);
 		// glUniformMatrix4fv(Pid, 1, GL_FALSE, &P[0][0]);
 
+		// cube_drawable->draw(P, V, glm::mat4(1));
 
 		// glBindVertexArray(VertexArrayID);
 		// glDrawElements(GL_TRIANGLES, faces.size(), GL_UNSIGNED_INT, 0);
 
-		glmesh.render();
+		// glmesh.render();
 
 		// the triangle drawing pipeline
 		// .
@@ -128,7 +98,7 @@ int main(int argc, char const *argv[]) {
 		// .
 		// activate & draw mesh buffers
 		//
-		// root.render(P, V);
+		root.render(P, V);
 		// end draw
 	    glfwSwapBuffers(window);
 	    glfwPollEvents();

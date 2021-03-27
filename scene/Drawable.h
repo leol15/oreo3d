@@ -3,15 +3,20 @@
 
 #include "../resource/GLMesh.h"
 #include "../resource/ShaderProgram.h"
+#include "../geometry/Geometry.h"
+#include "../scene/Transformable.h"
 
-// contains everything you need to draw some triangles
-class Drawable {
+// contains everything you need to draw some triangles (draws one mesh only!)
+class Drawable : public Transformable {
 public:
-	Drawable() : glmesh_(), shaderprogram_(nullptr) { };
+	Drawable() : Transformable(),
+		glmesh_(), shaderprogram_(nullptr) { };
 	virtual ~Drawable() { };
 	
 	// setters
 	void setShaderProgram(ShaderProgram * sp) { shaderprogram_ = sp; }
+
+	void setGeometry(const Geometry & geo) { setMesh(geo.getMesh()); }
 
 	void setMesh(const Mesh & mesh);
 
