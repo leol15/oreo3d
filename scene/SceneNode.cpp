@@ -19,7 +19,14 @@ void SceneNode::render(const glm::mat4& proj_matrix,
 
 	// childrens
 	for (auto & child : children_) {
-		child.render(proj_matrix, view_matrix, model_matrix);
+		child->render(proj_matrix, view_matrix, model_matrix);
+	}
+}
+
+
+SceneNode::~SceneNode() {
+	for (auto & child : children_) {
+		delete child;
 	}
 }
 

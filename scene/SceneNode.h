@@ -19,13 +19,15 @@ public:
 		glm::mat4 model_matrix = glm::mat4(1));
 
 	void setDrawable(Drawable *d) { drawable_ = d; }
-	void addSceneNode(SceneNode& node) {
+
+	// add child node, takes ownership too
+	void addSceneNode(SceneNode * node) {
 		children_.push_back(node);
 	}
 
-	virtual ~SceneNode() { };
+	virtual ~SceneNode();
 private:
-	std::vector<SceneNode> children_;
+	std::vector<SceneNode *> children_;
 	Drawable * drawable_;
 
 };

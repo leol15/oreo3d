@@ -63,64 +63,41 @@ int main(int argc, char const *argv[]) {
 
 	root->addSceneNode(n2);
 
+	double dx = 1;
+	double dv = 0;
+	double t = glfwGetTime();
 	// main loop
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && 
 			glfwWindowShouldClose(window) == 0) {
+		if (rand() % 30 == 0)
+			std::cerr << ((glfwGetTime() - t) * 1000) << std::endl;
+		t = glfwGetTime();
 		// one whole process
 		gl_clear();
-		// draw with hand
-		// glUseProgram(default_shader->getProgram());
-
-		// GLuint Mid = glGetUniformLocation(default_shader->getProgram(), "M");
-		// GLuint Vid = glGetUniformLocation(default_shader->getProgram(), "V");
-		// GLuint Pid = glGetUniformLocation(default_shader->getProgram(), "P");
-		// GLuint MVPid = glGetUniformLocation(default_shader->getProgram(), "MVP");
-		// GLuint Mid = glGetUniformLocation(default_shader->getProgram(), "M");
-		// GLuint DTid = glGetUniformLocation(default_shader->getProgram(), "DT");
-
 		// view and projection matrix
 		glm::mat4 P = ctrl.getProjectionMatrix();
 		glm::mat4 V = ctrl.getViewMatrix();
-		// glUniformMatrix4fv(Pid, 1, GL_FALSE, &P[0][0]);
-		// glUniformMatrix4fv(Mid, 1, GL_FALSE, &M[0][0]);
-		// glUniformMatrix4fv(Vid, 1, GL_FALSE, &V[0][0]);
 
-		// lights
-		// glUniform3fv(LightPositionID, 1, &LightPosition[0]);
-		// glUniform3fv(LightAmbientID, 1, &LightAmbient[0]);
-		// glm::vec3 CameraPosition = ctrl.getCameraPosition();
-		// glUniform3fv(CameraPositionID, 1, &CameraPosition[0]);
-		// glUniformMatrix4fv(Mid, 1, GL_FALSE, &M[0][0]);
-		// glUniformMatrix4fv(Vid, 1, GL_FALSE, &V[0][0]);
-		// glUniformMatrix4fv(Pid, 1, GL_FALSE, &P[0][0]);
-
-		// cube_drawable->draw(P, V, glm::mat4(1));
-
-		// glBindVertexArray(VertexArrayID);
-		// glDrawElements(GL_TRIANGLES, faces.size(), GL_UNSIGNED_INT, 0);
-
-		// glmesh.render();
-
-		// the triangle drawing pipeline
-		// .
-		// load some shader programing into memory
-		// .
-		// set all uniforms in shader
-		// .
-		// activate & draw mesh buffers
-		//
 		root->render(P, V);
 		// end draw
 	    glfwSwapBuffers(window);
 	    glfwPollEvents();
+
+	    // simulate
+		n2->setTranslate({0, dx, 0});
+		dv -= 0.005;
+		dx += dv;
+		if (dx < -1.0) {
+			// dv += 0.005;
+			dv = -dv;
+			dx = -0.99;
+		}
 	}
 
 	// clean up
 	std::cerr << "cleaning up" << std::endl;
 	delete default_shader;
-	delete cube_drawable;
-	delete sphere_drawable;
-	delete root;
+	// delete cube_drawable;
 
 	return 0;
 }

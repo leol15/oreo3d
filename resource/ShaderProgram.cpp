@@ -86,7 +86,7 @@ ShaderProgram::ShaderProgram(
 		glDetachShader(program_id_, GeometryShaderID);
 		glDeleteShader(GeometryShaderID);
 	}
-	queryUniforms(program_id_);
+	// queryUniforms(program_id_);
 }
 
 ShaderProgram::~ShaderProgram() {

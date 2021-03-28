@@ -11,6 +11,7 @@ class GLMesh {
 public:
 	GLMesh();
 	~GLMesh();
+	GLMesh(const GLMesh& other) = delete;
 
 	void setMesh(const Mesh& mesh);
 	void render() const;

@@ -8,7 +8,7 @@
 class Transformable {
 public:
 	Transformable() : model_matrix_(1.0f),
-		translate_(0), rotate_(0), scale_(0) { };
+		translate_(0), rotate_(0), scale_(1) { };
 
 	// can set matrix directly
 	void setModelMatrix(const glm::mat4 & M) {
